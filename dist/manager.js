@@ -8,26 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const api_url = 'https://week11-rpb.up.railway.app/';
+const api_url = 'https://week-15-rprasetyob-production.up.railway.app/';
 const btnCreate = document.getElementById('btnCreate');
 const logoutBtn = document.getElementById('logoutBtn');
-// log out
-const logOut = () => {
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    window.location.href = '/index.html';
-};
-function getToken() {
-    const cookies = document.cookie.split(';');
-    let token = '';
-    let role = '';
-    for (const cookie of cookies) {
-        const [name, value] = cookie.trim().split('=');
-        if (name === 'token') {
-            token = value;
-        }
-    }
-    return { token, role };
-}
 function fetchHtml() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -80,8 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 // create task
 const createTask = () => __awaiter(void 0, void 0, void 0, function* () {
-    const token = getToken().token;
-    const role = getToken().role;
     const inputTask = document.getElementById('inputTask').value;
     if (inputTask == '' || !inputTask) {
         return alert('New task input still empty');
@@ -93,7 +74,6 @@ const createTask = () => __awaiter(void 0, void 0, void 0, function* () {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(body)
     });
@@ -104,18 +84,13 @@ const createTask = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 // delete task
 const deleteTask = (idTask) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = getToken().token;
-    const response = yield fetch(api_url + 'v1/tasks/' + idTask, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+    yield fetch(api_url + 'v1/tasks/' + idTask, {
+        method: 'DELETE'
     });
     fetchHtml();
 });
 // update task
 const updateTask = (updateStat) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = getToken().token;
     const updateInput = document.getElementById('inputUpdate').value;
     if (!updateInput || updateInput === '') {
         return alert('Update task input is empty');
@@ -124,11 +99,10 @@ const updateTask = (updateStat) => __awaiter(void 0, void 0, void 0, function* (
     const body = {
         status: updateInput
     };
-    const response = yield fetch(api_url + 'v1/tasks/' + updateStat, {
+    yield fetch(api_url + 'v1/tasks/' + updateStat, {
         method: 'PATCH',
         headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
     });
@@ -152,7 +126,6 @@ document.addEventListener('click', (e) => {
         const idUpdate = el.dataset.idtask;
         const btnUpdate = document.querySelector('.btn-updated');
         btnUpdate === null || btnUpdate === void 0 ? void 0 : btnUpdate.setAttribute('data-idtask', idUpdate);
-        console.log(123);
     }
 });
 //update
@@ -163,5 +136,3 @@ document.addEventListener('click', (e) => {
         updateTask(updateStat);
     }
 });
-//log out
-logoutBtn.addEventListener('click', logOut);

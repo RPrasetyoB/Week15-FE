@@ -1,25 +1,6 @@
-const api_url = 'https://week11-rpb.up.railway.app/'
+const api_url = 'https://week-15-rprasetyob-production.up.railway.app/'
 const btnCreate = document.getElementById('btnCreate')as HTMLButtonElement;
 const logoutBtn = document.getElementById('logoutBtn') as HTMLButtonElement;
-
-// log out
-const logOut = ()=> {
-    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    window.location.href = '/index.html';
-}
-
-function getToken() {
-    const cookies = document.cookie.split(';');
-    let token = ''
-    let role = ''
-    for (const cookie of cookies) {
-      const [name, value] = cookie.trim().split('=');
-      if (name === 'token') {
-         token = value
-      }
-    }
-    return {token, role}
-  }
   
 
 async function fetchHtml() {
@@ -71,8 +52,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 // create task
 
 const createTask = async () => {
-    const token = getToken().token
-    const role = getToken().role
     const inputTask = (document.getElementById('inputTask') as HTMLInputElement).value;
     if(inputTask == '' || !inputTask) {
         return alert('New task input still empty')
@@ -85,7 +64,6 @@ const createTask = async () => {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(body)
     });
@@ -100,12 +78,8 @@ fetchHtml()
 // delete task
 
 const deleteTask = async (idTask : string) => {
-    const token = getToken().token
-    const response = await fetch(api_url + 'v1/tasks/' + idTask, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+    await fetch(api_url + 'v1/tasks/' + idTask, {
+        method: 'DELETE'
     })
 
     fetchHtml()
@@ -114,7 +88,6 @@ const deleteTask = async (idTask : string) => {
 // update task
 
 const updateTask = async (updateStat : string) => {
-    const token = getToken().token
     const updateInput = (document.getElementById('inputUpdate') as HTMLInputElement).value;
 
     if (!updateInput || updateInput === '') {
@@ -125,11 +98,10 @@ const updateTask = async (updateStat : string) => {
     const body = {
         status  : updateInput
     }
-    const response = await fetch(api_url + 'v1/tasks/' + updateStat, {
+    await fetch(api_url + 'v1/tasks/' + updateStat, {
         method: 'PATCH',
         headers: {
-            "Content-Type": "application/json",
-            'Authorization': `Bearer ${token}`
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
     });
@@ -159,7 +131,6 @@ document.addEventListener('click', (e: MouseEvent) => {
         const idUpdate : any = el.dataset.idtask
         const btnUpdate = document.querySelector('.btn-updated')
         btnUpdate?.setAttribute('data-idtask', idUpdate)
-        console.log(123);
     }
 })
 //update
@@ -171,5 +142,3 @@ document.addEventListener('click', (e: MouseEvent) => {
         updateTask(updateStat as string)
     }
 })
-//log out
-logoutBtn.addEventListener('click', logOut)
