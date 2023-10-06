@@ -19,8 +19,8 @@ const initialValues = {
 
 const AddCategory: React.FC = () => {
     const navigate = useNavigate();
-    // const ApiUrl = 'https://week-15-rprasetyob-production.up.railway.app/'
-    const ApiUrl = 'http://localhost:4000/'
+    const ApiUrl = 'https://week-15-rprasetyob-production.up.railway.app/'
+    // const ApiUrl = 'http://localhost:4000/'
     const [isLoading, setIsLoading] = useState(false);
     
     const handleSubmit = async (values: addCategory) => {
