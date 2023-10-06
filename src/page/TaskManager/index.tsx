@@ -44,7 +44,8 @@ interface Category {
 }
 
 const TaskManager: React.FC = () => {
-  const ApiUrl = 'https://week-15-rprasetyob-production.up.railway.app/'
+  // const ApiUrl = 'https://week-15-rprasetyob-production.up.railway.app/'
+  const ApiUrl = 'http://localhost:4000/'
   // navigation //
   const navigate = useNavigate();
 
@@ -120,7 +121,7 @@ const TaskManager: React.FC = () => {
           marginLeft: 'auto',
           marginRight: 'auto'}}>
           <Button size="large" onClick={() => navigate("/add")}>
-            Add category
+            Add Task
           </Button>
         </div>
         <TableContainer component={Paper}>
